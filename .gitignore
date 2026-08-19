@@ -1,0 +1,8 @@
+*.pdf
+/includes/config.php
+/data/*.sqlite
+/data/*.sqlite-wal
+/data/*.sqlite-shm
+/uploads/products/*
+!/uploads/products/.htaccess
+!/uploads/products/.gitkeep
