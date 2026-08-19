@@ -129,8 +129,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $error === '') {
             }
 
             $insP = $pdo->prepare(
-                'INSERT INTO products (category_id, name, description, note, price, is_featured, sort_order)
-                 VALUES (?, ?, ?, ?, ?, ?, ?)'
+                'INSERT INTO products (category_id, name, description, note, price, image_path, is_featured, sort_order)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
             );
             foreach ($seed['products'] as $p) {
                 $insP->execute([
@@ -139,6 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $error === '') {
                     $p['description'],
                     $p['note'],
                     $p['price'],
+                    $p['image_path'] ?? null,
                     $p['is_featured'] ? 1 : 0,
                     $p['sort_order'],
                 ]);
@@ -185,7 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $error === '') {
     <h1>La Dural menü kurulumu</h1>
     <?php if ($ok): ?>
       <p class="ok">Kurulum tamam. <strong>install.php dosyasını hemen silin.</strong></p>
-      <p><a class="btn" href="admin/login.php">Admin girişi</a> <a class="btn ghost" href="index.php">Menüyü gör</a></p>
+      <p><a class="btn" href="admin/login.php">Admin girişi</a> <a class="btn ghost" href="/">Menüyü gör</a></p>
     <?php else: ?>
       <?php if ($error): ?><p class="err"><?= e($error) ?></p><?php endif; ?>
       <p class="muted">Önce MySQL veritabanını oluşturup <code>includes/config.php</code> dosyasını doldurun. 2026 PDF menüsü otomatik yüklenecek.</p>

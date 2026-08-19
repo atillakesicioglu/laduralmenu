@@ -1,4 +1,5 @@
 *.pdf
+/La Dural Logo.png
 /includes/config.php
 /data/*.sqlite
 /data/*.sqlite-wal
@@ -6,3 +7,7 @@
 /uploads/products/*
 !/uploads/products/.htaccess
 !/uploads/products/.gitkeep
+!/uploads/products/*.jpg
+!/uploads/products/*.jpeg
+!/uploads/products/*.png
+!/uploads/products/*.webp

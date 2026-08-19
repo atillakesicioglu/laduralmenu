@@ -1,7 +1,7 @@
 :root{--wine:#832825;--wine-dark:#5f211f;--gold:#d1aa6b;--paper:#f7f2ec;--card:#fffdfc;--ink:#261b19;--muted:#766b67;--soft:#b49795;--line:rgba(117,42,41,.12)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;background:#e9e1d9}
-body{margin:0;background:#e9e1d9;color:var(--ink);font-family:Manrope,Arial,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{margin:0;background:#e9e1d9;color:var(--ink);font-family:Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 button,input{font:inherit}
 button{touch-action:manipulation}
 a{color:var(--wine);text-decoration:none}
@@ -13,8 +13,9 @@ a:hover{color:var(--wine-dark)}
 .hero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(125deg,rgba(255,255,255,.055) 0 1px,transparent 1px 27px);pointer-events:none}
 .hero::after{content:"";position:absolute;top:-40px;right:-30px;width:150px;height:150px;border:1px solid rgba(255,255,255,.06);transform:rotate(35deg);pointer-events:none}
 .hero-inner{position:relative;display:flex;flex-direction:column;gap:8px}
-.brand-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
-.brand{font-family:"Cormorant Garamond",Georgia,serif;font-size:35px;font-style:italic;font-weight:600;line-height:.95;letter-spacing:.5px}
+.brand-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand-logo{display:block;height:40px;width:auto;max-width:min(220px,62vw)}
+.brand{font-family:Arial,Helvetica,sans-serif;font-size:35px;font-weight:700;line-height:.95;letter-spacing:.5px}
 .city{padding-bottom:3px;color:var(--gold);font-size:9.5px;font-weight:700;letter-spacing:.3em;text-transform:uppercase}
 .slogan{color:rgba(209,170,107,.92);font-size:10px;font-weight:600;letter-spacing:.26em;text-transform:uppercase}
 .details{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:1px;color:rgba(251,251,250,.82);font-size:12px}
@@ -50,10 +51,10 @@ a:hover{color:var(--wine-dark)}
 .featured-card:hover{transform:translateY(-2px);border-color:rgba(117,42,41,.23);box-shadow:0 8px 22px rgba(95,33,31,.08)}
 .featured-category,.result-category{color:var(--gold);font-size:10.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase}
 .featured-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
-.featured-heading h2{margin:0;color:var(--ink);font-family:"Cormorant Garamond",Georgia,serif;font-size:24px;font-weight:600;line-height:1.12}
+.featured-heading h2{margin:0;color:var(--ink);font-family:Arial,Helvetica,sans-serif;font-size:22px;font-weight:700;line-height:1.12}
 .featured-card p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.55}
 .menu-section{padding:32px 20px 6px;scroll-margin-top:166px}
-.menu-section>h2{margin:6px 0 0;color:var(--ink);font-family:"Cormorant Garamond",Georgia,serif;font-size:31px;font-weight:600;line-height:1.08}
+.menu-section>h2{margin:6px 0 0;color:var(--ink);font-family:Arial,Helvetica,sans-serif;font-size:26px;font-weight:700;line-height:1.08}
 .rule{width:46px;height:2px;margin:13px 0 2px;border-radius:2px;background:var(--wine)}
 .subheading{margin:24px 0 2px;color:var(--wine);font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}
 .menu-item{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:15px 0;border-bottom:1px solid rgba(117,42,41,.1)}
@@ -76,9 +77,9 @@ a:hover{color:var(--wine-dark)}
 .search-result .menu-item{border-bottom:0;padding-top:5px}
 .empty-result{margin-top:16px;padding:26px 20px;border:1px dashed rgba(117,42,41,.18);border-radius:14px;color:var(--muted);font-size:14px;text-align:center}
 footer{display:flex;flex-direction:column;gap:9px;margin-top:22px;padding:34px 20px calc(40px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
-.footer-brand{color:var(--wine);font-family:"Cormorant Garamond",Georgia,serif;font-size:26px;font-style:italic;font-weight:600;line-height:1}
+.footer-brand{color:var(--wine);font-family:Arial,Helvetica,sans-serif;font-size:22px;font-weight:700;line-height:1}
 .footer-info{margin-top:2px;color:var(--muted);font-size:13px;line-height:1.55}
-.footer-slogan{margin-top:6px;color:var(--soft);font-family:"Cormorant Garamond",Georgia,serif;font-size:16px;font-style:italic}
+.footer-slogan{margin-top:6px;color:var(--soft);font-family:Arial,Helvetica,sans-serif;font-size:14px}
 .to-top{position:fixed;right:max(16px,calc((100vw - 720px)/2 + 16px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;align-items:center;justify-content:center;width:46px;height:46px;padding:0;border:0;border-radius:50%;background:var(--wine);box-shadow:0 5px 16px rgba(95,33,31,.3);color:#fbfbfa;cursor:pointer;opacity:0;transform:translateY(12px) scale(.88);pointer-events:none;transition:opacity .2s ease,transform .28s cubic-bezier(.2,.8,.2,1)}
 .to-top.visible{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
 @keyframes fade-rise{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}

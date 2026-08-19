@@ -9,12 +9,25 @@ function e(?string $value): string
 
 function format_price(float|string $price): string
 {
-    $n = (float) $price;
-    if (abs($n - round($n)) < 0.001) {
-        return (string) (int) round($n) . ' TL';
+    return number_format((float) $price, 2, ',', '.') . ' TL';
+}
+
+function format_price_input(float|string $price): string
+{
+    return number_format((float) $price, 2, ',', '');
+}
+
+function parse_price(string $raw): float
+{
+    $raw = trim(str_replace(' ', '', $raw));
+    if (str_contains($raw, ',') && str_contains($raw, '.')) {
+        $raw = str_replace('.', '', $raw);
+        $raw = str_replace(',', '.', $raw);
+    } else {
+        $raw = str_replace(',', '.', $raw);
     }
 
-    return number_format($n, 2, ',', '.') . ' TL';
+    return (float) $raw;
 }
 
 function slugify(string $text): string
@@ -81,5 +94,32 @@ function unique_slug(PDO $pdo, string $base, ?int $ignoreId = null): string
         }
         $try = $slug . '-' . $i;
         $i++;
+    }
+}
+
+function apply_default_product_photos(PDO $pdo): void
+{
+    static $done = false;
+    if ($done) {
+        return;
+    }
+    $done = true;
+    $map = [
+        'Günün Çorbası' => 'uploads/products/corba.jpg',
+        'Kahvaltı Tabağı' => 'uploads/products/kahvalti.jpg',
+        'Serpme Kahvaltı' => 'uploads/products/serpme.jpg',
+        'Grup Kahvaltı' => 'uploads/products/grup.jpg',
+        'Söğüş Tabağı' => 'uploads/products/sogus.jpg',
+    ];
+    try {
+        $st = $pdo->prepare('UPDATE products SET image_path = ? WHERE name = ? AND (image_path IS NULL OR image_path = \'\')');
+        $root = dirname(__DIR__);
+        foreach ($map as $name => $path) {
+            if (is_file($root . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $path))) {
+                $st->execute([$path, $name]);
+            }
+        }
+    } catch (Throwable $e) {
+        $done = false;
     }
 }

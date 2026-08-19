@@ -24,15 +24,15 @@ $cats = $pdo->query('SELECT id, name FROM categories ORDER BY sort_order')->fetc
 admin_header('Ürünler', 'products.php');
 flash();
 ?>
-<div class="card" style="margin-bottom:16px">
-  <div class="row">
-    <h1 style="margin:0;flex:1">Ürünler</h1>
-    <a class="btn" href="product-edit.php">Ürün ekle</a>
-  </div>
-  <form method="get" style="margin-top:12px">
-    <label>Kategori
+<div class="page-head">
+  <h1>Ürünler</h1>
+  <a class="btn" href="product-edit.php">Yeni ürün</a>
+</div>
+<div class="card" style="margin-bottom:14px">
+  <form method="get">
+    <label>Kategoriye göre filtrele
       <select name="cat" onchange="this.form.submit()">
-        <option value="0">Tümü</option>
+        <option value="0">Tüm kategoriler</option>
         <?php foreach ($cats as $c): ?>
           <option value="<?= (int) $c['id'] ?>" <?= $filter === (int) $c['id'] ? 'selected' : '' ?>><?= e($c['name']) ?></option>
         <?php endforeach; ?>
@@ -40,38 +40,26 @@ flash();
     </label>
   </form>
 </div>
-
-<div class="card" style="overflow:auto">
-  <table>
-    <thead>
-      <tr>
-        <th></th>
-        <th>Ürün</th>
-        <th>Kategori</th>
-        <th>Fiyat</th>
-        <th class="hide-sm">Durum</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-    <?php foreach ($rows as $p): ?>
-      <tr>
-        <td>
-          <?php if ($p['image_path']): ?>
-            <img class="thumb-sm" src="../<?= e($p['image_path']) ?>" alt="">
-          <?php endif; ?>
-        </td>
-        <td>
-          <strong><?= e($p['name']) ?></strong>
-          <?php if ((int) $p['is_featured']): ?><div class="muted">Öne çıkan</div><?php endif; ?>
-        </td>
-        <td><?= e($p['category_name']) ?></td>
-        <td><?= e(format_price($p['price'])) ?></td>
-        <td class="hide-sm"><?= (int) $p['is_active'] ? 'Görünür' : 'Gizli' ?></td>
-        <td><a href="product-edit.php?id=<?= (int) $p['id'] ?>">Düzenle</a></td>
-      </tr>
-    <?php endforeach; ?>
-    </tbody>
-  </table>
+<div class="product-list">
+<?php foreach ($rows as $p): ?>
+  <article class="product-row">
+    <?php if ($p['image_path']): ?>
+      <img class="thumb" src="../<?= e($p['image_path']) ?>" alt="">
+    <?php else: ?>
+      <div class="thumb-empty">Fotoğraf yok</div>
+    <?php endif; ?>
+    <div>
+      <div class="p-name">
+        <?= e($p['name']) ?>
+        <?php if ((int) $p['is_featured']): ?><span class="badge">Öne çıkan</span><?php endif; ?>
+        <?php if (!(int) $p['is_active']): ?><span class="badge off">Gizli</span><?php endif; ?>
+      </div>
+      <div class="p-meta"><?= e($p['category_name']) ?></div>
+    </div>
+    <div class="price-col"><?= e(format_price($p['price'])) ?></div>
+    <a class="btn ghost" href="product-edit.php?id=<?= (int) $p['id'] ?>">Düzenle</a>
+  </article>
+<?php endforeach; ?>
+<?php if (!$rows): ?><p class="muted">Bu filtrede ürün yok.</p><?php endif; ?>
 </div>
 <?php admin_footer();

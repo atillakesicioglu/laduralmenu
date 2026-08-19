@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/includes/bootstrap.php';
 
+$uri = $_SERVER['REQUEST_URI'] ?? '';
+if (preg_match('#/index\.php(?:/|\?|$)#i', $uri)) {
+    $qs = $_SERVER['QUERY_STRING'] ?? '';
+    header('Location: /' . ($qs !== '' ? '?' . $qs : ''), true, 301);
+    exit;
+}
+
 try {
     $pdo = db();
     $ready = db_installed($pdo);
@@ -52,9 +59,6 @@ $noticeSub = setting($pdo, 'notice_sub', '');
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title><?= e($brand) ?> Menü</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/menu.css">
 </head>
 <body>
@@ -63,7 +67,7 @@ $noticeSub = setting($pdo, 'notice_sub', '');
     <header class="hero">
       <div class="hero-inner">
         <div class="brand-row">
-          <div class="brand"><?= e($brand) ?></div>
+          <img class="brand-logo" src="assets/img/logo.png" alt="<?= e($brand) ?>">
           <div class="city"><?= e($city) ?></div>
         </div>
         <div class="slogan"><?= e($slogan) ?></div>
