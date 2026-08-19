@@ -24,12 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin girişi — La Dural</title>
-  <link rel="stylesheet" href="../assets/css/admin.css">
+  <link rel="stylesheet" href="../assets/css/admin.css?v=3">
 </head>
 <body class="admin-body">
   <div class="login-page">
     <main class="card login-card">
-      <img src="../assets/img/logo.png?v=2" alt="La Dural">
+      <img src="../assets/img/logo.png?v=3" alt="La Dural" width="95" height="22">
       <h1>Yönetim paneli</h1>
       <?php if ($err): ?><p class="err"><?= e($err) ?></p><?php endif; ?>
       <form method="post">

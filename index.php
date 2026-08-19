@@ -59,7 +59,7 @@ $noticeSub = setting($pdo, 'notice_sub', '');
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title><?= e($brand) ?> Menü</title>
-  <link rel="stylesheet" href="assets/css/menu.css">
+  <link rel="stylesheet" href="assets/css/menu.css?v=3">
 </head>
 <body>
 <div class="page">
@@ -67,7 +67,7 @@ $noticeSub = setting($pdo, 'notice_sub', '');
     <header class="hero">
       <div class="hero-inner">
         <div class="brand-row">
-          <img class="brand-logo" src="assets/img/logo.png?v=2" alt="<?= e($brand) ?>">
+          <img class="brand-logo" src="assets/img/logo.png?v=3" alt="<?= e($brand) ?>" width="95" height="22">
           <div class="city"><?= e($city) ?></div>
         </div>
         <div class="slogan"><?= e($slogan) ?></div>
@@ -174,7 +174,7 @@ $noticeSub = setting($pdo, 'notice_sub', '');
   </main>
 
   <footer>
-    <div class="footer-brand"><?= e($brand) ?></div>
+    <img class="footer-logo" src="assets/img/logo-wine.png?v=3" alt="<?= e($brand) ?>" width="95" height="22">
     <div class="footer-info"><?= nl2br(e($address)) ?></div>
     <div class="footer-info"><?= e($hours) ?></div>
     <?php if ($ig !== ''): ?>
