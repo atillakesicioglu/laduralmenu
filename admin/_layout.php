@@ -16,7 +16,7 @@ function admin_header(string $title, string $active = ''): void
     echo '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap">';
     echo '<link rel="stylesheet" href="../assets/css/admin.css"></head><body class="admin-body">';
     echo '<aside class="sidebar">';
-    echo '<a class="sidebar-brand" href="products.php"><img src="../assets/img/logo.png" alt="La Dural"></a>';
+    echo '<a class="sidebar-brand" href="products.php"><img src="../assets/img/logo.png?v=2" alt="La Dural"></a>';
     echo '<nav class="sidebar-nav">';
     foreach ($links as $href => $label) {
         $cls = $active === $href ? ' active' : '';

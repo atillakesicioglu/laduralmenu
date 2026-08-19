@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body class="admin-body">
   <div class="login-page">
     <main class="card login-card">
-      <img src="../assets/img/logo.png" alt="La Dural">
+      <img src="../assets/img/logo.png?v=2" alt="La Dural">
       <h1>Yönetim paneli</h1>
       <?php if ($err): ?><p class="err"><?= e($err) ?></p><?php endif; ?>
       <form method="post">

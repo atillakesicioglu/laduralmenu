@@ -67,7 +67,7 @@ $noticeSub = setting($pdo, 'notice_sub', '');
     <header class="hero">
       <div class="hero-inner">
         <div class="brand-row">
-          <img class="brand-logo" src="assets/img/logo.png" alt="<?= e($brand) ?>">
+          <img class="brand-logo" src="assets/img/logo.png?v=2" alt="<?= e($brand) ?>">
           <div class="city"><?= e($city) ?></div>
         </div>
         <div class="slogan"><?= e($slogan) ?></div>
