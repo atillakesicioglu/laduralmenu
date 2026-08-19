@@ -50,7 +50,7 @@ function db_installed(PDO $pdo): bool
     try {
         $v = $pdo->query("SELECT v FROM settings WHERE k = 'installed'")->fetchColumn();
         return $v === '1';
-    } catch (PDOException) {
+    } catch (PDOException $e) {
         return false;
     }
 }

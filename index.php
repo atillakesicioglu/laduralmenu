@@ -7,7 +7,7 @@ require_once __DIR__ . '/includes/bootstrap.php';
 try {
     $pdo = db();
     $ready = db_installed($pdo);
-} catch (Throwable) {
+} catch (Throwable $e) {
     $ready = false;
 }
 

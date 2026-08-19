@@ -33,7 +33,7 @@ function require_admin(): void
     }
 }
 
-function login_admin(PDO $pdo, string $username, string $password): string|true
+function login_admin(PDO $pdo, string $username, string $password)
 {
     $st = $pdo->prepare('SELECT * FROM admins WHERE username = ? LIMIT 1');
     $st->execute([$username]);
