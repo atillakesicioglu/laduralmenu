@@ -1,0 +1,13 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=${HOME}/public_html/
+    - /bin/mkdir -p ${DEPLOYPATH}admin ${DEPLOYPATH}assets ${DEPLOYPATH}includes ${DEPLOYPATH}uploads/products
+    - /bin/cp index.php ${DEPLOYPATH}
+    - /bin/cp install.php ${DEPLOYPATH}
+    - /bin/cp .htaccess ${DEPLOYPATH}
+    - /bin/cp -R admin/. ${DEPLOYPATH}admin/
+    - /bin/cp -R assets/. ${DEPLOYPATH}assets/
+    - /bin/cp -R includes/. ${DEPLOYPATH}includes/
+    - /bin/cp uploads/products/.htaccess ${DEPLOYPATH}uploads/products/
+    - /bin/cp uploads/products/.gitkeep ${DEPLOYPATH}uploads/products/
