@@ -21,20 +21,21 @@
   const pageLoader = document.getElementById("pageLoader");
   if (pageLoader) {
     const logo = pageLoader.querySelector(".page-loader-logo");
+    const SPINNER_MS = 1500;
     const ZOOM_MS = 1800;
     const HOLD_MS = 300;
-    const FADE_MS = 700;
+    const FADE_MS = 900;
 
     const calcCoverScale = (logoEl) => {
       const w = logoEl.offsetWidth;
       const h = logoEl.offsetHeight;
-      if (!w || !h) return 14;
+      if (!w || !h) return 28;
       const vw = window.innerWidth;
       const vh = window.innerHeight;
       const scaleX = vw / w;
       const scaleY = vh / h;
       const scaleDiag = Math.hypot(vw, vh) / Math.hypot(w, h);
-      return Math.max(scaleX, scaleY, scaleDiag) * 1.12;
+      return Math.max(scaleX, scaleY, scaleDiag) * 1.12 * 2;
     };
 
     const finish = () => {
@@ -43,13 +44,8 @@
       if (pageLoader.isConnected) pageLoader.remove();
     };
 
-    const runIntro = () => {
+    const startZoom = () => {
       if (!logo || !pageLoader.isConnected) return;
-
-      if (reducedMotion) {
-        finish();
-        return;
-      }
 
       const coverScale = calcCoverScale(logo);
       pageLoader.classList.add("is-zooming");
@@ -70,6 +66,17 @@
           }, FADE_MS);
         }, HOLD_MS);
       }, ZOOM_MS);
+    };
+
+    const runIntro = () => {
+      if (!logo || !pageLoader.isConnected) return;
+
+      if (reducedMotion) {
+        finish();
+        return;
+      }
+
+      window.setTimeout(startZoom, SPINNER_MS);
     };
 
     const boot = () => {

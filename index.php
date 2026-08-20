@@ -59,12 +59,15 @@ $noticeSub = setting($pdo, 'notice_sub', '');
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title><?= e($brand) ?> Menü</title>
-  <link rel="stylesheet" href="assets/css/menu.css?v=8">
+  <link rel="stylesheet" href="assets/css/menu.css?v=9">
 </head>
 <body class="is-loading">
   <div id="pageLoader" class="page-loader" aria-hidden="true">
     <div class="page-loader-stage">
-      <img class="page-loader-logo" src="assets/img/logo.png?v=3" alt="<?= e($brand) ?>" width="180" height="44">
+      <div class="page-loader-content">
+        <img class="page-loader-logo" src="assets/img/logo.png?v=3" alt="<?= e($brand) ?>" width="180" height="44">
+        <div class="page-loader-spinner" aria-hidden="true"></div>
+      </div>
     </div>
     <div class="page-loader-curtain" aria-hidden="true"></div>
   </div>
@@ -194,6 +197,6 @@ $noticeSub = setting($pdo, 'notice_sub', '');
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V6M6 12l6-6 6 6"/></svg>
   </button>
 </div>
-<script src="assets/js/menu.js?v=4"></script>
+<script src="assets/js/menu.js?v=5"></script>
 </body>
 </html>
