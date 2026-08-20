@@ -59,7 +59,7 @@ $noticeSub = setting($pdo, 'notice_sub', '');
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title><?= e($brand) ?> Menü</title>
-  <link rel="stylesheet" href="assets/css/menu.css?v=6">
+  <link rel="stylesheet" href="assets/css/menu.css?v=7">
 </head>
 <body class="is-loading">
   <div id="pageLoader" class="page-loader" aria-hidden="true">
@@ -195,6 +195,6 @@ $noticeSub = setting($pdo, 'notice_sub', '');
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V6M6 12l6-6 6 6"/></svg>
   </button>
 </div>
-<script src="assets/js/menu.js?v=2"></script>
+<script src="assets/js/menu.js?v=3"></script>
 </body>
 </html>

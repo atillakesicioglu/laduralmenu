@@ -21,7 +21,8 @@
   const pageLoader = document.getElementById("pageLoader");
   if (pageLoader) {
     const minMs = reducedMotion ? 500 : 1200;
-    const exitMs = reducedMotion ? 220 : 720;
+    const zoomMs = reducedMotion ? 0 : 620;
+    const fadeMs = reducedMotion ? 280 : 520;
     const start = performance.now();
     let stopped = false;
 
@@ -30,14 +31,27 @@
       stopped = true;
       const elapsed = performance.now() - start;
       const delay = Math.max(0, minMs - elapsed);
+
       window.setTimeout(() => {
         if (!pageLoader.isConnected) return;
-        pageLoader.classList.add("is-exiting");
-        document.body.classList.remove("is-loading");
-        document.body.classList.add("is-ready");
+
+        if (reducedMotion) {
+          document.body.classList.remove("is-loading");
+          document.body.classList.add("is-ready");
+          pageLoader.remove();
+          return;
+        }
+
+        pageLoader.classList.add("is-zooming");
         window.setTimeout(() => {
-          if (pageLoader.isConnected) pageLoader.remove();
-        }, exitMs);
+          if (!pageLoader.isConnected) return;
+          pageLoader.classList.add("is-fading");
+          document.body.classList.remove("is-loading");
+          document.body.classList.add("is-ready");
+          window.setTimeout(() => {
+            if (pageLoader.isConnected) pageLoader.remove();
+          }, fadeMs);
+        }, zoomMs);
       }, delay);
     };
 
