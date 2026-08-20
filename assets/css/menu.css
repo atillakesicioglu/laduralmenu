@@ -57,8 +57,10 @@ a:hover{color:var(--wine-dark)}
 .menu-section>h2{margin:6px 0 0;color:var(--ink);font-family:Arial,Helvetica,sans-serif;font-size:26px;font-weight:700;line-height:1.08}
 .rule{width:46px;height:2px;margin:13px 0 2px;border-radius:2px;background:var(--wine)}
 .subheading{margin:24px 0 2px;color:var(--wine);font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}
-.menu-item{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;min-height:96px;padding:15px 0;border-bottom:1px solid rgba(117,42,41,.1);cursor:pointer;-webkit-tap-highlight-color:transparent}
-.menu-item:active{background:rgba(131,40,37,.03)}
+.section-items{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.menu-item{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;min-height:96px;padding:14px;border:1px solid rgba(117,42,41,.14);border-radius:16px;background:var(--card);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.menu-item:hover{border-color:rgba(117,42,41,.23);box-shadow:0 8px 22px rgba(95,33,31,.08)}
+.menu-item:active{transform:scale(.995);background:#fff}
 .item-thumb{flex:0 0 64px;width:64px;height:64px;border-radius:12px;object-fit:cover;background:rgba(117,42,41,.08)}
 .item-thumb-empty{background:rgba(117,42,41,.06)}
 @media (min-width:480px){.item-thumb{flex-basis:72px;width:72px;height:72px}.menu-item{min-height:104px}}
@@ -75,9 +77,9 @@ a:hover{color:var(--wine-dark)}
 .results{padding:22px 16px 8px;animation:fade-rise .24s ease both}
 .result-summary{margin-top:5px;color:var(--muted);font-size:13px}
 .result-list{margin-top:8px}
-.search-result{border-bottom:1px solid rgba(117,42,41,.1)}
-.search-result .result-category{padding-top:15px;color:var(--soft)}
-.search-result .menu-item{border-bottom:0;padding-top:5px}
+.search-result{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.search-result .result-category{padding-top:4px;color:var(--soft)}
+.search-result .menu-item{margin:0}
 .empty-result{margin-top:16px;padding:26px 20px;border:1px dashed rgba(117,42,41,.18);border-radius:14px;color:var(--muted);font-size:14px;text-align:center}
 footer{display:flex;flex-direction:column;gap:9px;margin-top:22px;padding:34px 20px calc(40px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
 .footer-brand{color:var(--wine);font-family:Arial,Helvetica,sans-serif;font-size:22px;font-weight:700;line-height:1}

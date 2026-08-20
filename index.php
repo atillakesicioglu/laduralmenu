@@ -59,7 +59,7 @@ $noticeSub = setting($pdo, 'notice_sub', '');
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title><?= e($brand) ?> Menü</title>
-  <link rel="stylesheet" href="assets/css/menu.css?v=12">
+  <link rel="stylesheet" href="assets/css/menu.css?v=13">
 </head>
 <body class="is-loading">
   <div id="pageLoader" class="page-loader" aria-hidden="true">
