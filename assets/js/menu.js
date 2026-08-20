@@ -20,29 +20,46 @@
 
   const pageLoader = document.getElementById("pageLoader");
   if (pageLoader) {
-    const minMs = reducedMotion ? 350 : 260; // hızlı başlat, sonra yavaş zoom
-    const zoomMs = reducedMotion ? 0 : 1500; // logo yavaşça büyüsün
-    const fadeMs = reducedMotion ? 280 : 420; // zoom bitti, yumuşak fade
-    const start = performance.now();
-    let stopped = false;
+    const logo = pageLoader.querySelector(".page-loader-logo");
+    const ZOOM_MS = 1800;
+    const HOLD_MS = 300;
+    const FADE_MS = 700;
 
-    const stop = () => {
-      if (stopped) return;
-      stopped = true;
-      const elapsed = performance.now() - start;
-      const delay = Math.max(0, minMs - elapsed);
+    const calcCoverScale = (logoEl) => {
+      const w = logoEl.offsetWidth;
+      const h = logoEl.offsetHeight;
+      if (!w || !h) return 14;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const scaleX = vw / w;
+      const scaleY = vh / h;
+      const scaleDiag = Math.hypot(vw, vh) / Math.hypot(w, h);
+      return Math.max(scaleX, scaleY, scaleDiag) * 1.12;
+    };
+
+    const finish = () => {
+      document.body.classList.remove("is-loading");
+      document.body.classList.add("is-ready");
+      if (pageLoader.isConnected) pageLoader.remove();
+    };
+
+    const runIntro = () => {
+      if (!logo || !pageLoader.isConnected) return;
+
+      if (reducedMotion) {
+        finish();
+        return;
+      }
+
+      const coverScale = calcCoverScale(logo);
+      pageLoader.classList.add("is-zooming");
+      requestAnimationFrame(() => {
+        logo.style.transform = `scale(${coverScale})`;
+      });
 
       window.setTimeout(() => {
         if (!pageLoader.isConnected) return;
-
-        if (reducedMotion) {
-          document.body.classList.remove("is-loading");
-          document.body.classList.add("is-ready");
-          pageLoader.remove();
-          return;
-        }
-
-        pageLoader.classList.add("is-zooming");
+        pageLoader.classList.add("is-covered");
         window.setTimeout(() => {
           if (!pageLoader.isConnected) return;
           pageLoader.classList.add("is-fading");
@@ -50,13 +67,25 @@
           document.body.classList.add("is-ready");
           window.setTimeout(() => {
             if (pageLoader.isConnected) pageLoader.remove();
-          }, fadeMs);
-        }, zoomMs);
-      }, delay);
+          }, FADE_MS);
+        }, HOLD_MS);
+      }, ZOOM_MS);
     };
 
-    document.addEventListener("DOMContentLoaded", stop, { once: true });
-    window.addEventListener("load", stop, { once: true });
+    const boot = () => {
+      if (!logo) {
+        finish();
+        return;
+      }
+      if (logo.complete && logo.naturalWidth > 0) runIntro();
+      else logo.addEventListener("load", runIntro, { once: true });
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", boot, { once: true });
+    } else {
+      boot();
+    }
   }
 
   let activeCategory = chips[0] ? chips[0].dataset.target : "";
