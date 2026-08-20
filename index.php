@@ -59,7 +59,7 @@ $noticeSub = setting($pdo, 'notice_sub', '');
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title><?= e($brand) ?> Menü</title>
-  <link rel="stylesheet" href="assets/css/menu.css?v=10">
+  <link rel="stylesheet" href="assets/css/menu.css?v=11">
 </head>
 <body class="is-loading">
   <div id="pageLoader" class="page-loader" aria-hidden="true">
@@ -151,15 +151,22 @@ $noticeSub = setting($pdo, 'notice_sub', '');
           <div class="section-items">
             <?php foreach ($items as $p): ?>
             <article class="menu-item"
+              role="button"
+              tabindex="0"
               data-name="<?= e($p['name']) ?>"
               data-description="<?= e($p['description']) ?>"
-              data-category="<?= e($p['category_name']) ?>">
+              data-note="<?= e($p['note']) ?>"
+              data-category="<?= e($p['category_name']) ?>"
+              data-price="<?= e(format_price($p['price'])) ?>"
+              data-image="<?= e($p['image_path'] ?? '') ?>">
               <?php if (!empty($p['image_path'])): ?>
                 <img class="item-thumb" src="<?= e($p['image_path']) ?>" alt="" width="72" height="72">
+              <?php else: ?>
+                <div class="item-thumb item-thumb-empty" aria-hidden="true"></div>
               <?php endif; ?>
               <div class="item-copy">
                 <h3><?= e($p['name']) ?></h3>
-                <?php if ($p['description'] !== ''): ?><p><?= e($p['description']) ?></p><?php endif; ?>
+                <p><?= e($p['description']) ?></p>
                 <?php if ($p['note'] !== ''): ?><div class="item-meta"><?= e($p['note']) ?></div><?php endif; ?>
               </div>
               <div class="price"><?= e(format_price($p['price'])) ?></div>
@@ -194,6 +201,32 @@ $noticeSub = setting($pdo, 'notice_sub', '');
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V6M6 12l6-6 6 6"/></svg>
   </button>
 </div>
-<script src="assets/js/menu.js?v=6"></script>
+
+  <div id="productSheet" class="product-sheet" hidden aria-hidden="true">
+    <button class="product-sheet-backdrop" type="button" aria-label="Kapat"></button>
+    <div class="product-sheet-panel" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+      <div class="product-sheet-handle" aria-hidden="true"></div>
+      <button id="sheetClose" class="product-sheet-close" type="button" aria-label="Kapat">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="product-sheet-media">
+        <img id="sheetImage" class="product-sheet-image" src="" alt="">
+        <div id="sheetImageEmpty" class="product-sheet-image-empty" hidden>Fotoğraf yok</div>
+      </div>
+      <div class="product-sheet-body">
+        <div class="product-sheet-top">
+          <div class="product-sheet-copy">
+            <div id="sheetCategory" class="product-sheet-category"></div>
+            <h2 id="sheetTitle" class="product-sheet-title"></h2>
+            <p id="sheetDescription" class="product-sheet-desc"></p>
+            <div id="sheetNote" class="product-sheet-note" hidden></div>
+          </div>
+          <div id="sheetPrice" class="product-sheet-price"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="assets/js/menu.js?v=7"></script>
 </body>
 </html>

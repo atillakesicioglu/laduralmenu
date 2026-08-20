@@ -21,7 +21,7 @@
   const pageLoader = document.getElementById("pageLoader");
   if (pageLoader) {
     const SPINNER_MS = 1500;
-    const FADE_MS = 650;
+    const LIFT_MS = 850;
 
     const finish = () => {
       document.body.classList.remove("is-loading");
@@ -37,12 +37,12 @@
         return;
       }
 
-      pageLoader.classList.add("is-hiding");
       document.body.classList.remove("is-loading");
       document.body.classList.add("is-ready");
+      pageLoader.classList.add("is-lifting");
       window.setTimeout(() => {
         if (pageLoader.isConnected) pageLoader.remove();
-      }, FADE_MS);
+      }, LIFT_MS);
     };
 
     const boot = () => window.setTimeout(hideLoader, SPINNER_MS);
@@ -101,9 +101,6 @@
       category.className = "result-category";
       category.textContent = row.dataset.category;
       const clone = row.cloneNode(true);
-      clone.removeAttribute("data-name");
-      clone.removeAttribute("data-description");
-      clone.removeAttribute("data-category");
       wrapper.append(category, clone);
       resultList.append(wrapper);
     });
@@ -201,5 +198,93 @@
     activateChip(firstId, true);
     window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" });
     window.setTimeout(updateActiveCategory, lockMs + 40);
+  });
+
+  const productSheet = document.getElementById("productSheet");
+  const sheetImage = document.getElementById("sheetImage");
+  const sheetImageEmpty = document.getElementById("sheetImageEmpty");
+  const sheetCategory = document.getElementById("sheetCategory");
+  const sheetTitle = document.getElementById("sheetTitle");
+  const sheetDescription = document.getElementById("sheetDescription");
+  const sheetNote = document.getElementById("sheetNote");
+  const sheetPrice = document.getElementById("sheetPrice");
+  const sheetClose = document.getElementById("sheetClose");
+
+  function openProductSheet(item) {
+    if (!productSheet || !item) return;
+
+    const name = item.dataset.name || "";
+    const description = item.dataset.description || "";
+    const note = item.dataset.note || "";
+    const category = item.dataset.category || "";
+    const price = item.dataset.price || "";
+    const image = item.dataset.image || "";
+
+    sheetTitle.textContent = name;
+    sheetCategory.textContent = category;
+    sheetDescription.textContent = description;
+    sheetPrice.textContent = price;
+
+    if (note) {
+      sheetNote.hidden = false;
+      sheetNote.textContent = note;
+    } else {
+      sheetNote.hidden = true;
+      sheetNote.textContent = "";
+    }
+
+    if (image) {
+      sheetImage.hidden = false;
+      sheetImageEmpty.hidden = true;
+      sheetImage.src = image;
+      sheetImage.alt = name;
+    } else {
+      sheetImage.hidden = true;
+      sheetImage.removeAttribute("src");
+      sheetImage.alt = "";
+      sheetImageEmpty.hidden = false;
+    }
+
+    productSheet.hidden = false;
+    productSheet.setAttribute("aria-hidden", "false");
+    document.body.classList.add("sheet-open");
+    requestAnimationFrame(() => {
+      productSheet.classList.add("is-open");
+    });
+  }
+
+  function closeProductSheet() {
+    if (!productSheet || productSheet.hidden) return;
+    productSheet.classList.remove("is-open");
+    document.body.classList.remove("sheet-open");
+    productSheet.setAttribute("aria-hidden", "true");
+    window.setTimeout(() => {
+      if (!productSheet.classList.contains("is-open")) {
+        productSheet.hidden = true;
+        sheetImage.removeAttribute("src");
+      }
+    }, reducedMotion ? 0 : 320);
+  }
+
+  document.addEventListener("click", (event) => {
+    const item = event.target.closest(".menu-item");
+    if (item) {
+      openProductSheet(item);
+      return;
+    }
+    if (event.target.closest(".product-sheet-backdrop") || event.target.closest("#sheetClose")) {
+      closeProductSheet();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeProductSheet();
+      return;
+    }
+    if ((event.key === "Enter" || event.key === " ") && event.target.classList.contains("menu-item")) {
+      event.preventDefault();
+      openProductSheet(event.target);
+    }
   });
 })();
