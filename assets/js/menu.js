@@ -21,7 +21,7 @@
   // Loader: sayfa render olunca logoyu kapat (gereksiz bekletme, ama flash da olmasın).
   const pageLoader = document.getElementById("pageLoader");
   if (pageLoader) {
-    const minMs = reducedMotion ? 180 : 650;
+    const minMs = 2000;
     const start = performance.now();
     let stopped = false;
 
