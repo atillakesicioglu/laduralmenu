@@ -201,6 +201,8 @@
   });
 
   const productSheet = document.getElementById("productSheet");
+  const sheetPanel = productSheet ? productSheet.querySelector(".product-sheet-panel") : null;
+  const sheetGrab = document.getElementById("sheetGrab");
   const sheetImage = document.getElementById("sheetImage");
   const sheetImageEmpty = document.getElementById("sheetImageEmpty");
   const sheetCategory = document.getElementById("sheetCategory");
@@ -208,7 +210,18 @@
   const sheetDescription = document.getElementById("sheetDescription");
   const sheetNote = document.getElementById("sheetNote");
   const sheetPrice = document.getElementById("sheetPrice");
-  const sheetClose = document.getElementById("sheetClose");
+
+  let sheetDrag = null;
+
+  function setSheetOffset(y) {
+    if (!sheetPanel) return;
+    sheetPanel.style.transform = "translateY(" + Math.max(0, y) + "px)";
+  }
+
+  function clearSheetOffset() {
+    if (!sheetPanel) return;
+    sheetPanel.style.transform = "";
+  }
 
   function openProductSheet(item) {
     if (!productSheet || !item) return;
@@ -224,6 +237,8 @@
     sheetCategory.textContent = category;
     sheetDescription.textContent = description;
     sheetPrice.textContent = price;
+    clearSheetOffset();
+    productSheet.classList.remove("is-dragging");
 
     if (note) {
       sheetNote.hidden = false;
@@ -255,15 +270,69 @@
 
   function closeProductSheet() {
     if (!productSheet || productSheet.hidden) return;
-    productSheet.classList.remove("is-open");
+    productSheet.classList.remove("is-open", "is-dragging");
     document.body.classList.remove("sheet-open");
     productSheet.setAttribute("aria-hidden", "true");
     window.setTimeout(() => {
       if (!productSheet.classList.contains("is-open")) {
         productSheet.hidden = true;
+        clearSheetOffset();
         sheetImage.removeAttribute("src");
       }
     }, reducedMotion ? 0 : 320);
+  }
+
+  function onSheetPointerDown(event) {
+    if (!productSheet || !sheetPanel || productSheet.hidden) return;
+    if (event.target.closest("#sheetClose")) return;
+    sheetDrag = {
+      pointerId: event.pointerId,
+      startY: event.clientY,
+      lastY: event.clientY,
+      lastT: performance.now(),
+      offset: 0,
+      velocity: 0
+    };
+    productSheet.classList.add("is-dragging");
+    if (sheetGrab && sheetGrab.setPointerCapture) {
+      try { sheetGrab.setPointerCapture(event.pointerId); } catch (_) {}
+    }
+  }
+
+  function onSheetPointerMove(event) {
+    if (!sheetDrag || event.pointerId !== sheetDrag.pointerId) return;
+    const now = performance.now();
+    const dy = event.clientY - sheetDrag.startY;
+    const dt = Math.max(16, now - sheetDrag.lastT);
+    sheetDrag.velocity = (event.clientY - sheetDrag.lastY) / dt;
+    sheetDrag.lastY = event.clientY;
+    sheetDrag.lastT = now;
+    sheetDrag.offset = Math.max(0, dy);
+    setSheetOffset(sheetDrag.offset);
+  }
+
+  function onSheetPointerUp(event) {
+    if (!sheetDrag || event.pointerId !== sheetDrag.pointerId) return;
+    const shouldClose = sheetDrag.offset > 110 || sheetDrag.velocity > 0.55;
+    const offset = sheetDrag.offset;
+    sheetDrag = null;
+    productSheet.classList.remove("is-dragging");
+
+    if (shouldClose) {
+      closeProductSheet();
+      return;
+    }
+
+    if (offset > 0) {
+      clearSheetOffset();
+    }
+  }
+
+  if (sheetGrab) {
+    sheetGrab.addEventListener("pointerdown", onSheetPointerDown);
+    sheetGrab.addEventListener("pointermove", onSheetPointerMove);
+    sheetGrab.addEventListener("pointerup", onSheetPointerUp);
+    sheetGrab.addEventListener("pointercancel", onSheetPointerUp);
   }
 
   document.addEventListener("click", (event) => {

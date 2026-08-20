@@ -59,7 +59,7 @@ $noticeSub = setting($pdo, 'notice_sub', '');
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title><?= e($brand) ?> Menü</title>
-  <link rel="stylesheet" href="assets/css/menu.css?v=11">
+  <link rel="stylesheet" href="assets/css/menu.css?v=12">
 </head>
 <body class="is-loading">
   <div id="pageLoader" class="page-loader" aria-hidden="true">
@@ -205,11 +205,13 @@ $noticeSub = setting($pdo, 'notice_sub', '');
   <div id="productSheet" class="product-sheet" hidden aria-hidden="true">
     <button class="product-sheet-backdrop" type="button" aria-label="Kapat"></button>
     <div class="product-sheet-panel" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
-      <div class="product-sheet-handle" aria-hidden="true"></div>
-      <button id="sheetClose" class="product-sheet-close" type="button" aria-label="Kapat">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
-      </button>
       <div class="product-sheet-media">
+        <div class="product-sheet-grab" id="sheetGrab">
+          <div class="product-sheet-handle" aria-hidden="true"></div>
+        </div>
+        <button id="sheetClose" class="product-sheet-close" type="button" aria-label="Kapat">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
         <img id="sheetImage" class="product-sheet-image" src="" alt="">
         <div id="sheetImageEmpty" class="product-sheet-image-empty" hidden>Fotoğraf yok</div>
       </div>
@@ -227,6 +229,6 @@ $noticeSub = setting($pdo, 'notice_sub', '');
     </div>
   </div>
 
-<script src="assets/js/menu.js?v=7"></script>
+<script src="assets/js/menu.js?v=8"></script>
 </body>
 </html>
