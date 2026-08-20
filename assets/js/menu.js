@@ -20,23 +20,8 @@
 
   const pageLoader = document.getElementById("pageLoader");
   if (pageLoader) {
-    const logo = pageLoader.querySelector(".page-loader-logo");
     const SPINNER_MS = 1500;
-    const ZOOM_MS = 1800;
-    const HOLD_MS = 300;
-    const FADE_MS = 900;
-
-    const calcCoverScale = (logoEl) => {
-      const w = logoEl.offsetWidth;
-      const h = logoEl.offsetHeight;
-      if (!w || !h) return 28;
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      const scaleX = vw / w;
-      const scaleY = vh / h;
-      const scaleDiag = Math.hypot(vw, vh) / Math.hypot(w, h);
-      return Math.max(scaleX, scaleY, scaleDiag) * 1.12 * 2;
-    };
+    const FADE_MS = 650;
 
     const finish = () => {
       document.body.classList.remove("is-loading");
@@ -44,49 +29,23 @@
       if (pageLoader.isConnected) pageLoader.remove();
     };
 
-    const startZoom = () => {
-      if (!logo || !pageLoader.isConnected) return;
-
-      const coverScale = calcCoverScale(logo);
-      pageLoader.classList.add("is-zooming");
-      requestAnimationFrame(() => {
-        logo.style.transform = `scale(${coverScale})`;
-      });
-
-      window.setTimeout(() => {
-        if (!pageLoader.isConnected) return;
-        pageLoader.classList.add("is-covered");
-        window.setTimeout(() => {
-          if (!pageLoader.isConnected) return;
-          pageLoader.classList.add("is-fading");
-          document.body.classList.remove("is-loading");
-          document.body.classList.add("is-ready");
-          window.setTimeout(() => {
-            if (pageLoader.isConnected) pageLoader.remove();
-          }, FADE_MS);
-        }, HOLD_MS);
-      }, ZOOM_MS);
-    };
-
-    const runIntro = () => {
-      if (!logo || !pageLoader.isConnected) return;
+    const hideLoader = () => {
+      if (!pageLoader.isConnected) return;
 
       if (reducedMotion) {
         finish();
         return;
       }
 
-      window.setTimeout(startZoom, SPINNER_MS);
+      pageLoader.classList.add("is-hiding");
+      document.body.classList.remove("is-loading");
+      document.body.classList.add("is-ready");
+      window.setTimeout(() => {
+        if (pageLoader.isConnected) pageLoader.remove();
+      }, FADE_MS);
     };
 
-    const boot = () => {
-      if (!logo) {
-        finish();
-        return;
-      }
-      if (logo.complete && logo.naturalWidth > 0) runIntro();
-      else logo.addEventListener("load", runIntro, { once: true });
-    };
+    const boot = () => window.setTimeout(hideLoader, SPINNER_MS);
 
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", boot, { once: true });
