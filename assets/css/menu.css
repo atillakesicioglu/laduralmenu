@@ -85,12 +85,12 @@ footer{display:flex;flex-direction:column;gap:9px;margin-top:22px;padding:34px 2
 body.is-loading{overflow:hidden}
 body.is-loading .page{opacity:0}
 body.is-ready .page{opacity:1;transition:opacity .5s ease .08s}
-.page-loader{position:fixed;inset:0;z-index:120;background:var(--wine);display:flex;align-items:center;justify-content:center;opacity:1;pointer-events:auto;transition:background .62s ease,opacity .52s ease}
+.page-loader{position:fixed;inset:0;z-index:120;background:var(--wine);display:flex;align-items:center;justify-content:center;opacity:1;pointer-events:auto;transition:background 1.2s ease,opacity .52s ease}
 .page-loader.is-zooming{background:#fff;pointer-events:none}
 .page-loader.is-fading{opacity:0}
 .page-loader-inner{display:flex;flex-direction:column;align-items:center;gap:14px;padding:24px}
 .page-loader-logo{width:180px;max-width:70vw;height:auto;object-fit:contain;transform-origin:center center;will-change:transform;animation:loader-logo-breathe 1.1s ease-in-out infinite}
-.page-loader.is-zooming .page-loader-logo{animation:none;transform:scale(11);transition:transform .62s cubic-bezier(.45,0,.15,1);filter:none}
+.page-loader.is-zooming .page-loader-logo{animation:none;transform:scale(18);transition:transform 1.5s cubic-bezier(.45,0,.15,1);filter:none}
 .page-loader-slogan{color:#fbfbfa;font-size:12.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;font-family:Arial,Helvetica,sans-serif;opacity:.92;transition:opacity .18s ease}
 .page-loader.is-zooming .page-loader-slogan,.page-loader.is-zooming .page-loader-spinner{opacity:0}
 .page-loader-spinner{width:40px;height:40px;border-radius:50%;border:3px solid rgba(255,255,255,.24);border-top-color:#fff;animation:loader-spin .9s linear infinite;transition:opacity .18s ease}

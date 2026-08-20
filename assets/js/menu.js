@@ -20,9 +20,9 @@
 
   const pageLoader = document.getElementById("pageLoader");
   if (pageLoader) {
-    const minMs = reducedMotion ? 500 : 1200;
-    const zoomMs = reducedMotion ? 0 : 620;
-    const fadeMs = reducedMotion ? 280 : 520;
+    const minMs = reducedMotion ? 350 : 260; // hızlı başlat, sonra yavaş zoom
+    const zoomMs = reducedMotion ? 0 : 1500; // logo yavaşça büyüsün
+    const fadeMs = reducedMotion ? 280 : 420; // zoom bitti, yumuşak fade
     const start = performance.now();
     let stopped = false;
 
