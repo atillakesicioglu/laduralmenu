@@ -59,9 +59,17 @@ $noticeSub = setting($pdo, 'notice_sub', '');
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title><?= e($brand) ?> Menü</title>
-  <link rel="stylesheet" href="assets/css/menu.css?v=3">
+  <link rel="stylesheet" href="assets/css/menu.css?v=4">
 </head>
 <body>
+  <div id="pageLoader" class="page-loader" aria-hidden="true">
+    <div class="page-loader-inner">
+      <img class="page-loader-logo" src="assets/img/logo.png?v=3" alt="<?= e($brand) ?>" width="180" height="44">
+      <div class="page-loader-slogan"><?= e($slogan) ?></div>
+      <div class="page-loader-progress" aria-hidden="true"></div>
+    </div>
+  </div>
+
 <div class="page">
   <div class="sticky-shell">
     <header class="hero">

@@ -17,6 +17,38 @@
   const sections = Array.from(document.querySelectorAll(".menu-section"));
   const productRows = Array.from(document.querySelectorAll(".menu-item"));
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Loader: sayfa render olunca logoyu kapat (gereksiz bekletme, ama flash da olmasın).
+  const pageLoader = document.getElementById("pageLoader");
+  if (pageLoader) {
+    const minMs = reducedMotion ? 180 : 650;
+    const start = performance.now();
+    let stopped = false;
+
+    const stop = () => {
+      if (stopped) return;
+      stopped = true;
+      const elapsed = performance.now() - start;
+      const delay = Math.max(0, minMs - elapsed);
+      window.setTimeout(() => {
+        if (!pageLoader || !pageLoader.isConnected) return;
+        pageLoader.classList.add("is-hidden");
+      }, delay);
+    };
+
+    // Yükleme hızlıysa DOMContentLoaded'da kapatır, yavaş ağda load event'ini bekler.
+    document.addEventListener("DOMContentLoaded", stop, { once: true });
+    window.addEventListener("load", stop, { once: true });
+
+    pageLoader.addEventListener(
+      "transitionend",
+      () => {
+        if (pageLoader && pageLoader.isConnected) pageLoader.remove();
+      },
+      { once: true }
+    );
+  }
+
   let activeCategory = chips[0] ? chips[0].dataset.target : "";
   let scrollSpyLockedUntil = 0;
   let scrollTicking = false;
