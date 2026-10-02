@@ -17,11 +17,15 @@ function save_product_image(?array $file, ?string $oldPath = null): ?string
     if (!$file || ($file['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
         return $oldPath;
     }
-    if (($file['error'] ?? UPLOAD_ERR_OK) !== UPLOAD_ERR_OK) {
+    $error = (int) ($file['error'] ?? UPLOAD_ERR_OK);
+    if ($error !== UPLOAD_ERR_OK) {
+        if ($error === UPLOAD_ERR_INI_SIZE || $error === UPLOAD_ERR_FORM_SIZE) {
+            throw new RuntimeException('Fotoğraf çok büyük. En fazla 10 MB yükleyin.');
+        }
         throw new RuntimeException('Fotoğraf yüklenemedi.');
     }
-    if (($file['size'] ?? 0) > 2 * 1024 * 1024) {
-        throw new RuntimeException('Fotoğraf en fazla 2 MB olabilir.');
+    if (($file['size'] ?? 0) > 10 * 1024 * 1024) {
+        throw new RuntimeException('Fotoğraf en fazla 10 MB olabilir.');
     }
 
     $tmp = $file['tmp_name'];

@@ -107,6 +107,7 @@ $priceValue = isset($product['price']) ? format_price_input($product['price']) :
     </label>
     <label>Fotoğraf
       <input type="file" name="image" accept="image/jpeg,image/png,image/webp">
+      <span class="hint">JPG, PNG veya WEBP. En fazla 10 MB.</span>
     </label>
     <?php if (!empty($product['image_path'])): ?>
       <p><img class="edit-preview" src="../<?= e($product['image_path']) ?>" alt=""></p>
@@ -125,9 +126,41 @@ $priceValue = isset($product['price']) ? format_price_input($product['price']) :
       <?php endif; ?>
       <div class="push">
         <a class="btn ghost" href="products.php">Vazgeç</a>
-        <button class="btn" type="submit" name="action" value="save">Kaydet</button>
+        <button class="btn js-save-btn" type="submit" name="action" value="save">Kaydet</button>
       </div>
     </div>
   </form>
 </div>
-<?php admin_footer(price_js());
+<?php
+admin_footer(price_js() . <<<'JS'
+
+(function () {
+  const form = document.querySelector("form[enctype='multipart/form-data']");
+  if (!form) return;
+  const fileInput = form.querySelector('input[type="file"][name="image"]');
+  const maxBytes = 10 * 1024 * 1024;
+
+  form.addEventListener("submit", (event) => {
+    const submitter = event.submitter;
+    if (!submitter) return;
+
+    if (submitter.value === "save" && fileInput && fileInput.files && fileInput.files[0]) {
+      if (fileInput.files[0].size > maxBytes) {
+        event.preventDefault();
+        alert("Fotoğraf en fazla 10 MB olabilir.");
+        return;
+      }
+    }
+
+    form.querySelectorAll("button[type='submit']").forEach((btn) => {
+      btn.disabled = true;
+    });
+    if (submitter.value === "save") {
+      submitter.textContent = "Kaydediliyor...";
+    } else if (submitter.value === "delete") {
+      submitter.textContent = "Siliniyor...";
+    }
+  });
+})();
+JS
+);
