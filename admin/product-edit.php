@@ -120,13 +120,14 @@ $priceValue = isset($product['price']) ? format_price_input($product['price']) :
         <input name="sort_order" type="number" value="<?= e((string) $product['sort_order']) ?>">
       </label>
     <?php endif; ?>
+    <input type="hidden" name="action" id="formAction" value="save">
     <div class="form-actions">
       <?php if ($product): ?>
-        <button class="btn danger" type="submit" name="action" value="delete" onclick="return confirm('Ürün silinsin mi?')">Sil</button>
+        <button class="btn danger" type="submit" data-action="delete" onclick="return confirm('Ürün silinsin mi?')">Sil</button>
       <?php endif; ?>
       <div class="push">
         <a class="btn ghost" href="products.php">Vazgeç</a>
-        <button class="btn js-save-btn" type="submit" name="action" value="save">Kaydet</button>
+        <button class="btn" type="submit" data-action="save">Kaydet</button>
       </div>
     </div>
   </form>
@@ -137,14 +138,27 @@ admin_footer(price_js() . <<<'JS'
 (function () {
   const form = document.querySelector("form[enctype='multipart/form-data']");
   if (!form) return;
+  const actionInput = document.getElementById("formAction");
   const fileInput = form.querySelector('input[type="file"][name="image"]');
   const maxBytes = 10 * 1024 * 1024;
+  let locked = false;
+
+  form.querySelectorAll("button[type='submit'][data-action]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (actionInput) actionInput.value = btn.getAttribute("data-action") || "save";
+    });
+  });
 
   form.addEventListener("submit", (event) => {
-    const submitter = event.submitter;
-    if (!submitter) return;
+    if (locked) {
+      event.preventDefault();
+      return;
+    }
 
-    if (submitter.value === "save" && fileInput && fileInput.files && fileInput.files[0]) {
+    const action = actionInput ? actionInput.value : "save";
+    const submitter = event.submitter;
+
+    if (action === "save" && fileInput && fileInput.files && fileInput.files[0]) {
       if (fileInput.files[0].size > maxBytes) {
         event.preventDefault();
         alert("Fotoğraf en fazla 10 MB olabilir.");
@@ -152,13 +166,12 @@ admin_footer(price_js() . <<<'JS'
       }
     }
 
+    locked = true;
     form.querySelectorAll("button[type='submit']").forEach((btn) => {
       btn.disabled = true;
     });
-    if (submitter.value === "save") {
-      submitter.textContent = "Kaydediliyor...";
-    } else if (submitter.value === "delete") {
-      submitter.textContent = "Siliniyor...";
+    if (submitter) {
+      submitter.textContent = action === "delete" ? "Siliniyor..." : "Kaydediliyor...";
     }
   });
 })();

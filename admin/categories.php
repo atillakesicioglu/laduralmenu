@@ -78,9 +78,9 @@ flash();
 <?php if ($isNew || $edit): ?>
 <div class="card" style="margin-bottom:16px">
   <h1><?= $edit ? 'Kategori düzenle' : 'Yeni kategori' ?></h1>
-  <form method="post">
+  <form method="post" id="categoryForm">
     <?= csrf_field() ?>
-    <input type="hidden" name="action" value="<?= $edit ? 'update' : 'create' ?>">
+    <input type="hidden" name="action" id="catAction" value="<?= $edit ? 'update' : 'create' ?>">
     <?php if ($edit): ?><input type="hidden" name="id" value="<?= (int) $edit['id'] ?>"><?php endif; ?>
     <label>Menüde görünen ad
       <span class="hint">Üstteki kaydırmalı kategorilerde çıkan kısa ad. Örn. Gözleme</span>
@@ -98,13 +98,17 @@ flash();
     <?php endif; ?>
     <div class="form-actions">
       <?php if ($edit): ?>
-        <button class="btn danger" type="submit" name="action" value="delete" <?= (int) $edit['product_count'] > 0 ? 'disabled' : '' ?> onclick="return confirm('Kategori silinsin mi?')">Sil</button>
+        <?php $hasProducts = (int) $edit['product_count'] > 0; ?>
+        <button class="btn danger" type="submit" data-action="delete" <?= $hasProducts ? 'disabled title="Önce bu kategorideki ürünleri silin veya taşıyın"' : '' ?> onclick="return confirm('Kategori silinsin mi?')">Sil</button>
       <?php endif; ?>
       <div class="push">
         <a class="btn ghost" href="categories.php">Vazgeç</a>
-        <button class="btn" type="submit">Kaydet</button>
+        <button class="btn" type="submit" data-action="<?= $edit ? 'update' : 'create' ?>">Kaydet</button>
       </div>
     </div>
+    <?php if ($edit && (int) $edit['product_count'] > 0): ?>
+      <p class="hint" style="margin-top:10px">Sil pasif: bu kategoride <?= (int) $edit['product_count'] ?> ürün var. Önce ürünleri sil veya başka kategoriye taşı.</p>
+    <?php endif; ?>
   </form>
 </div>
 <?php endif; ?>
@@ -120,4 +124,17 @@ flash();
   </article>
 <?php endforeach; ?>
 </div>
-<?php admin_footer();
+<?php
+admin_footer(<<<'JS'
+(function () {
+  const form = document.getElementById("categoryForm");
+  if (!form) return;
+  const actionInput = document.getElementById("catAction");
+  form.querySelectorAll("button[type='submit'][data-action]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (actionInput) actionInput.value = btn.getAttribute("data-action") || actionInput.value;
+    });
+  });
+})();
+JS
+);
